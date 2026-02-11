@@ -33,12 +33,13 @@ Complete framework for collecting data and evaluating a legal tax information re
 
 ## Documentation
 
-- **[QUICKSTART.md](QUICKSTART.md)**: 5-minute quick start guide
-- **[DATA_COLLECTION_PLAN.md](DATA_COLLECTION_PLAN.md)**: Complete data collection strategy and timeline
-- **[IRC_SECTION_COVERAGE.md](IRC_SECTION_COVERAGE.md)**: Comprehensive documentation of 280+ IRC sections
-- **[STATE_TAX_CODES.md](STATE_TAX_CODES.md)**: All 50 states + DC tax code URLs and scraping guide
-- **[MANUAL_STEPS.md](MANUAL_STEPS.md)**: Manual intervention reference with time/cost estimates
-- **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)**: Technical architecture and design decisions
+- **[QUICKSTART.md](docs/QUICKSTART.md)**: 5-minute quick start guide
+- **[DATA_COLLECTION_PLAN.md](docs/DATA_COLLECTION_PLAN.md)**: Complete data collection strategy and timeline
+- **[IRC_SECTION_COVERAGE.md](docs/IRC_SECTION_COVERAGE.md)**: Comprehensive documentation of 280+ IRC sections
+- **[STATE_TAX_CODES.md](docs/STATE_TAX_CODES.md)**: All 50 states + DC tax code URLs and scraping guide
+- **[SCRAPER_VERIFICATION_REPORT.md](docs/SCRAPER_VERIFICATION_REPORT.md)**: State scraper testing results
+- **[MANUAL_STEPS.md](docs/MANUAL_STEPS.md)**: Manual intervention reference with time/cost estimates
+- **[PROJECT_SUMMARY.md](docs/PROJECT_SUMMARY.md)**: Technical architecture and design decisions
 
 ## Quick Start Guide
 
@@ -145,7 +146,7 @@ States marked as "manual" will generate `MANUAL_DOWNLOAD_INSTRUCTIONS.json` with
 
 **Output**: `data/raw/states/[state_name]/`
 
-**See**: [STATE_TAX_CODES.md](STATE_TAX_CODES.md) for complete state-by-state documentation
+**See**: [STATE_TAX_CODES.md](docs/STATE_TAX_CODES.md) for complete state-by-state documentation
 
 ### Step 1.3: Download COLIEE Benchmark (Manual)
 1. Register at http://coliee.org/
@@ -450,6 +451,6 @@ If you use this data collection framework, please link back to this repository a
 ## Contact & Support
 
 For questions about this data collection plan, open an issue or refer to:
-- `DATA_COLLECTION_PLAN.md` for overview
+- `docs/DATA_COLLECTION_PLAN.md` for overview
 - Individual script files for detailed documentation
 - `annotation/EXTRACTION_GUIDELINES.md` for annotation standards
