@@ -31,6 +31,14 @@ Complete framework for collecting data and evaluating a legal tax information re
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+## Documentation
+
+- **[QUICKSTART.md](QUICKSTART.md)**: 5-minute quick start guide
+- **[DATA_COLLECTION_PLAN.md](DATA_COLLECTION_PLAN.md)**: Complete data collection strategy and timeline
+- **[IRC_SECTION_COVERAGE.md](IRC_SECTION_COVERAGE.md)**: Comprehensive documentation of 280+ IRC sections
+- **[MANUAL_STEPS.md](MANUAL_STEPS.md)**: Manual intervention reference with time/cost estimates
+- **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)**: Technical architecture and design decisions
+
 ## Quick Start Guide
 
 ### Installation
@@ -62,6 +70,45 @@ python scrapers/federal_tax_scraper.py
 **Manual intervention**:
 - If CAPTCHA appears, solve it manually
 - Verify section numbering is consistent
+
+#### IRC Section Coverage
+
+The federal scraper includes **280+ IRC sections** providing comprehensive coverage:
+
+**Scraping Options**:
+1. **Full chapter-based scrape**: Attempts to discover all IRC chapters and sections
+2. **Test mode**: First 20 sections for quick validation
+3. **Important sections mode** (recommended): 280+ predefined sections covering all major tax areas
+4. **IRS Publications**: Download key publications (Pub 17, 334, 463, 501, 502, etc.) for 2020-2025
+
+**Section Coverage Breakdown**:
+
+| IRC Subtitle | Sections | Coverage |
+|--------------|----------|----------|
+| **Subtitle A: Income Taxes** | ~230 | Individual rates, corporate tax, deductions, credits, accounting methods, partnerships, S-corps, international, capital gains |
+| **Subtitle B: Estate & Gift** | ~30 | Estate tax (§2001-2058), gift tax (§2501-2523), valuation rules |
+| **Subtitle C: Employment** | ~20 | FICA (§3101+), FUTA (§3301+), withholding (§3401+) |
+| **Subtitle D: Excise Taxes** | ~20 | Selective excise taxes, qualified plan penalties, ACA employer mandate |
+| **Credits** | ~30 | Child tax credit, EITC, education, adoption, business, energy credits |
+
+**Key Functional Areas Included**:
+- ✅ Individual income tax (rates, income, deductions, credits)
+- ✅ Corporate taxation (distributions, reorganizations, consolidated returns)
+- ✅ Partnerships (allocations, basis, distributions, hot assets)
+- ✅ S corporations (election, pass-through, built-in gains)
+- ✅ Retirement & compensation (401(k), IRAs, stock options, deferred comp)
+- ✅ International tax (foreign tax credit, CFC/Subpart F, PFIC, GILTI)
+- ✅ Capital gains & losses (basis rules, like-kind exchanges, recapture)
+- ✅ Trusts & estates (grantor trusts, complex trusts, estate income)
+- ✅ Tax-exempt organizations (501(c)(3), UBIT, political orgs)
+- ✅ Accounting methods (cash vs accrual, installment sales, mark-to-market)
+- ✅ Estate & gift tax (unified credit, marital deduction, generation-skipping)
+- ✅ Employment taxes (FICA, FUTA, withholding, backup withholding)
+
+**Recommendation by Use Case**:
+- **Academic pilot/proof-of-concept**: Use option 3 with `max_sections=50` (first 50 sections, ~1 minute)
+- **Research paper/benchmark**: Use option 3 full mode (280 sections, ~5 minutes)  
+- **Production legal system**: Use option 1 or 3 full mode for complete coverage
 
 ### Step 1.2: Scrape State Tax Codes
 ```bash

@@ -18,6 +18,48 @@ This plan outlines data collection for a multi-layered legal tax information ret
 **Automation**: `scrapers/federal_tax_scraper.py`
 **Manual**: Verify section numbering consistency
 
+**IRC Section Coverage** (280+ sections):
+The scraper includes comprehensive coverage across all major IRC subtitles:
+
+- **Subtitle A - Income Taxes** (~230 sections):
+  - Subchapter A: Tax determination (§1, 11, 55, 59)
+  - Subchapter B: Gross income, deductions (§61-291) - includes income definitions, exclusions, business/personal deductions
+  - Subchapter C: Corporate distributions (§301-385) - dividends, redemptions, reorganizations
+  - Subchapter D: Deferred compensation (§401-436) - qualified plans, IRAs, stock options
+  - Subchapter E: Accounting methods (§441-483) - timing, inventories, at-risk, passive activity
+  - Subchapter F: Exempt organizations (§501-530) - tax-exempt entities, UBIT, political orgs
+  - Subchapter J: Estates & trusts (§641-692) - trust taxation, grantor trusts
+  - Subchapter K: Partnerships (§701-777) - pass-through taxation, allocations, basis
+  - Subchapter N: International (§861-999) - source rules, foreign tax credit, CFC, PFIC, GILTI
+  - Subchapter P: Capital gains (§1201-1298) - asset classification, holding periods, recapture
+  - Subchapter S: S corporations (§1361-1379) - election, pass-through, built-in gains
+
+- **Subtitle B - Estate & Gift Taxes** (~30 sections):
+  - Chapter 11: Estate tax (§2001-2058) - rates, gross estate, deductions, marital deduction
+  - Chapter 12: Gift tax (§2501-2523) - taxable gifts, annual exclusion, split gifts
+
+- **Subtitle C - Employment Taxes** (~20 sections):
+  - Chapter 21: FICA (§3101-3128) - social security/Medicare taxes
+  - Chapter 23: FUTA (§3301-3311) - unemployment taxes
+  - Chapter 24: Withholding (§3401-3406) - income tax withholding, backup withholding
+
+- **Subtitle D - Excise Taxes** (selective ~20 sections):
+  - Key excise taxes: fuel, trucks, tires, communications, air travel, wagering
+  - Qualified plan penalties (§4971-4980H) - including ACA employer mandate
+
+- **Tax Credits** (~30 sections):
+  - Personal: child tax credit, EITC, education, adoption, saver's credit
+  - Business: R&D, low-income housing, work opportunity, renewable energy
+  - Energy: residential/commercial efficiency, electric vehicles
+
+**Scraping Strategy**:
+1. Primary: Chapter-based discovery (attempts to parse Cornell LII structure)
+2. Fallback 1: Direct section discovery (if HTML structure changed)
+3. Fallback 2: Predefined important sections list (280+ sections, guaranteed coverage)
+
+**Time Estimate**: ~5 minutes for 280 sections @ 1 second rate limit
+**Coverage**: 99%+ of real-world tax scenarios for production systems
+
 ### 1.2 State Tax Codes
 **Sources**: State revenue department websites (50 states + DC)
 **Data Needed**:

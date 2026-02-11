@@ -12,9 +12,12 @@ pip install -r requirements.txt
 ```bash
 python scrapers/federal_tax_scraper.py
 # Choose option 2 (test mode - 20 sections)
+# OR choose option 3 for comprehensive 280+ section coverage (5 min)
 ```
 
 Expected output: `data/raw/federal/usc_title26/section_*.json`
+
+**Note**: The scraper includes 280+ IRC sections covering all major tax areas. See [IRC_SECTION_COVERAGE.md](IRC_SECTION_COVERAGE.md) for complete documentation.
 
 ## 3. Generate Sample Scenarios (1 min)
 ```bash

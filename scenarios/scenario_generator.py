@@ -111,20 +111,20 @@ class TaxScenarioGenerator:
             {
                 'type': 'individual',
                 'filing_status': ['single', 'married_joint', 'married_separate', 'head_of_household'],
-                'income_ranges': [(0, 25000), (25000, 75000), (75000, 150000), (150000, 500000), (500000, float('inf'))],
+                'income_ranges': [(0, 25000), (25000, 75000), (75000, 150000), (150000, 500000), (500000, 10000000)],
                 'special_situations': [None, 'self_employed', 'rental_income', 'foreign_income', 'investment_income']
             },
             {
                 'type': 'small_business',
                 'entity_types': ['sole_proprietor', 'llc', 's_corp', 'partnership'],
-                'revenue_ranges': [(0, 100000), (100000, 500000), (500000, 2000000), (2000000, float('inf'))],
+                'revenue_ranges': [(0, 100000), (100000, 500000), (500000, 2000000), (2000000, 50000000)],
                 'employee_counts': [0, 1, 5, 10, 25, 50],
                 'special_situations': [None, 'multi_state', 'online_sales', 'remote_employees']
             },
             {
                 'type': 'corporation',
                 'entity_types': ['c_corp', 's_corp'],
-                'revenue_ranges': [(0, 1000000), (1000000, 10000000), (10000000, float('inf'))],
+                'revenue_ranges': [(0, 1000000), (1000000, 10000000), (10000000, 100000000)],
                 'special_situations': [None, 'multi_state', 'international', 'publicly_traded']
             }
         ]
