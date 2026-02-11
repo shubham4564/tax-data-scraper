@@ -36,6 +36,7 @@ Complete framework for collecting data and evaluating a legal tax information re
 - **[QUICKSTART.md](QUICKSTART.md)**: 5-minute quick start guide
 - **[DATA_COLLECTION_PLAN.md](DATA_COLLECTION_PLAN.md)**: Complete data collection strategy and timeline
 - **[IRC_SECTION_COVERAGE.md](IRC_SECTION_COVERAGE.md)**: Comprehensive documentation of 280+ IRC sections
+- **[STATE_TAX_CODES.md](STATE_TAX_CODES.md)**: All 50 states + DC tax code URLs and scraping guide
 - **[MANUAL_STEPS.md](MANUAL_STEPS.md)**: Manual intervention reference with time/cost estimates
 - **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)**: Technical architecture and design decisions
 
@@ -115,11 +116,36 @@ The federal scraper includes **280+ IRC sections** providing comprehensive cover
 python scrapers/state_tax_scraper.py
 ```
 
-**Manual intervention**:
-- **California**: Follow instructions in `MANUAL_DOWNLOAD_INSTRUCTIONS.json`
-  - Download PDFs from https://www.ftb.ca.gov/tax-pros/law/
-- **Other states**: May require manual PDF downloads for some jurisdictions
-- Check `data/raw/states/` for state-specific notes
+**Coverage**: All **50 states + DC** configured with verified URLs
+
+**Options**:
+1. List all states and their configurations
+2. Scrape all states (automated + manual instructions)  
+3. Scrape only automated states (~37 states)
+4. Scrape specific state
+5. Test mode (5 sections per state)
+
+**State Categories**:
+- **✓ Automated** (~37 states): Direct scraping works (NY, TX, FL, etc.)
+- **⚠ Manual** (~14 states): Requires PDF download or navigation (CA, etc.)
+
+**Manual intervention states**:
+States marked as "manual" will generate `MANUAL_DOWNLOAD_INSTRUCTIONS.json` with:
+- Download URLs
+- Step-by-step instructions
+- Tax code references
+- Output directory paths
+
+**Key states for testing** (recommended priority):
+1. New York (excellent online access)
+2. Texas (no income tax - sales/property focus)
+3. California (largest economy - manual download)
+4. Florida (no income tax - corporate/sales focus)
+5. Illinois (structured online access)
+
+**Output**: `data/raw/states/[state_name]/`
+
+**See**: [STATE_TAX_CODES.md](STATE_TAX_CODES.md) for complete state-by-state documentation
 
 ### Step 1.3: Download COLIEE Benchmark (Manual)
 1. Register at http://coliee.org/
