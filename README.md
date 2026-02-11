@@ -126,8 +126,8 @@ python scrapers/state_tax_scraper.py
 5. Test mode (5 sections per state)
 
 **State Categories**:
-- **✓ Automated** (~37 states): Direct scraping works (NY, TX, FL, etc.)
-- **⚠ Manual** (~14 states): Requires PDF download or navigation (CA, etc.)
+- **✓ Automated** (~37 states): Direct scraping works (NY, TX, FL, GA, etc.)
+- **⚠ Manual** (~14 states): Requires PDF download or navigation (CA, AL, TN, etc.)
 
 **Manual intervention states**:
 States marked as "manual" will generate `MANUAL_DOWNLOAD_INSTRUCTIONS.json` with:

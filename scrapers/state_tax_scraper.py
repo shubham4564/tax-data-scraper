@@ -25,11 +25,11 @@ logger = logging.getLogger(__name__)
 STATE_CONFIGS = {
     'alabama': {
         'name': 'Alabama',
-        'base_url': 'https://casetext.com/statute/code-of-alabama/title-40-revenue-and-taxation',
+        'base_url': 'https://www.alabamainteractive.org/sos_code_alabama/index_chapter.atw?SNum=40',
         'alternate_url': 'https://revenue.alabama.gov/laws-rules/',
-        'type': 'manual',  # PDF downloads required
+        'type': 'manual',  # Official site structure complex, manual recommended
         'tax_types': ['income', 'sales', 'property'],
-        'notes': 'Title 40 - Revenue and Taxation. Requires manual download from state revenue site.'
+        'notes': 'Title 40 - Revenue and Taxation. Use official Alabama Legislative Information System or revenue department site for PDFs.'
     },
     'alaska': {
         'name': 'Alaska',
@@ -49,11 +49,11 @@ STATE_CONFIGS = {
     },
     'arkansas': {
         'name': 'Arkansas',
-        'base_url': 'https://casetext.com/statute/arkansas-code/title-26-taxation',
+        'base_url': 'https://advance.lexis.com/container?config=00JAA2ZjZiM2Y4ZS05MmE5LTRjZjgtYWJkNy02MzUzNzk1MjIwMTYKAFBvZENhdGFsb2fXiYCnsel0BMlN',
         'alternate_url': 'https://www.dfa.arkansas.gov/income-tax/tax-law-regs-and-court-cases/',
-        'type': 'manual',
+        'type': 'manual',  # LexisNexis requires subscription
         'tax_types': ['income', 'sales', 'property'],
-        'notes': 'Arkansas Code Title 26. PDF downloads recommended.'
+        'notes': 'Arkansas Code Title 26. Use DFA website for specific tax law PDFs.'
     },
     'california': {
         'name': 'California',
@@ -213,11 +213,12 @@ STATE_CONFIGS = {
     },
     'mississippi': {
         'name': 'Mississippi',
-        'base_url': 'https://law.justia.com/codes/mississippi/2022/title-27/',
+        'base_url': 'http://www.legislature.ms.gov/laws/statutes/',
+        'alternate_url': 'https://www.dor.ms.gov/laws-rules',
         'title': '27',  # Taxation and Finance
-        'type': 'manual',
+        'type': 'manual',  # Official site navigation required
         'tax_types': ['income', 'sales', 'property'],
-        'notes': 'Mississippi Code Title 27'
+        'notes': 'Mississippi Code Title 27. Use official legislature site or DOR for tax regulations.'
     },
     'missouri': {
         'name': 'Missouri',
@@ -271,10 +272,11 @@ STATE_CONFIGS = {
     'new_mexico': {
         'name': 'New Mexico',
         'base_url': 'https://nmonesource.com/nmos/nmsa/en/nav.do',
+        'alternate_url': 'https://www.tax.newmexico.gov/all-nm-taxes/tax-law-guidance/',
         'chapter': '7',  # Taxation
-        'type': 'manual',
+        'type': 'manual',  # NMOneSource requires subscription
         'tax_types': ['income', 'gross_receipts', 'property'],
-        'notes': 'New Mexico Statutes Annotated Chapter 7'
+        'notes': 'New Mexico Statutes Annotated Chapter 7. Use Taxation & Revenue Dept for guidance documents.'
     },
     'new_york': {
         'name': 'New York',
@@ -325,11 +327,12 @@ STATE_CONFIGS = {
     },
     'pennsylvania': {
         'name': 'Pennsylvania',
-        'base_url': 'https://www.legis.state.pa.us/cfdocs/legis/LI/consCheck.cfm?tabType=1',
+        'base_url': 'https://www.legis.state.pa.us/cfdocs/legis/LI/consCheck.cfm?txtType=HTM&ttl=72',
+        'alternate_url': 'https://www.revenue.pa.gov/FormsandPublications/PALawsandRegulations/Pages/default.aspx',
         'title': '72',  # Taxation and Fiscal Affairs
-        'type': 'manual',
+        'type': 'manual',  # Official site interactive, revenue dept has PDFs
         'tax_types': ['income', 'sales', 'property', 'corporate'],
-        'notes': 'Pennsylvania Consolidated Statutes Title 72'
+        'notes': 'Pennsylvania Consolidated Statutes Title 72. Use PA Dept of Revenue for tax laws and regulations.'
     },
     'rhode_island': {
         'name': 'Rhode Island',
@@ -358,11 +361,11 @@ STATE_CONFIGS = {
     'tennessee': {
         'name': 'Tennessee',
         'base_url': 'https://www.tn.gov/revenue/taxes.html',
-        'alternate_url': 'https://law.justia.com/codes/tennessee/2022/title-67/',
+        'alternate_url': 'https://publications.tnsosfiles.com/acts/110/pub/pc0001.pdf',
         'title': '67',  # Taxes and Licenses
-        'type': 'manual',
+        'type': 'manual',  # Use TN Dept of Revenue for specific tax guidance
         'tax_types': ['sales', 'property', 'franchise'],  # No broad-based income tax
-        'notes': 'Tennessee Code Title 67. No individual income tax (except interest/dividends).'
+        'notes': 'Tennessee Code Title 67. No individual income tax. Use TN Dept of Revenue website for tax-specific information.'
     },
     'texas': {
         'name': 'Texas',
@@ -689,6 +692,200 @@ class FloridaScraper(BaseStateScraper):
             return None
 
 
+class CasetextScraper(BaseStateScraper):
+    """Base scraper for Casetext.com hosted state codes"""
+    
+    def scrape(self, max_sections: Optional[int] = None) -> List[Dict]:
+        """Scrape state code from Casetext"""
+        logger.info(f"Starting {self.state_name} scraping from Casetext...")
+        
+        try:
+            time.sleep(self.rate_limit)
+            response = self.session.get(self.config['base_url'])
+            response.raise_for_status()
+            
+            soup = BeautifulSoup(response.content, 'html.parser')
+            sections = []
+            
+            # Casetext structure: find chapter/subtitle links
+            for link in soup.find_all('a', href=re.compile(r'/statute/')):
+                text = link.get_text(strip=True)
+                if not text or len(text) < 3:
+                    continue
+                
+                href = link['href']
+                if not href.startswith('http'):
+                    href = f"https://casetext.com{href}"
+                
+                sections.append({
+                    'title': text,
+                    'url': href
+                })
+                
+                if max_sections and len(sections) >= max_sections:
+                    break
+            
+            # Scrape each section
+            all_data = []
+            for i, section in enumerate(sections[:max_sections] if max_sections else sections):
+                logger.info(f"Scraping section {i+1}/{len(sections)}: {section['title']}")
+                section_data = self._scrape_casetext_section(section)
+                if section_data:
+                    all_data.append(section_data)
+                    filename = f"section_{i+1:04d}.json"
+                    self._save_section(section_data, filename)
+                time.sleep(self.rate_limit)
+            
+            return all_data
+            
+        except Exception as e:
+            logger.error(f"Error scraping {self.state_name} from Casetext: {e}")
+            return []
+    
+    def _scrape_casetext_section(self, section: Dict) -> Optional[Dict]:
+        """Scrape individual section from Casetext"""
+        try:
+            time.sleep(self.rate_limit)
+            response = self.session.get(section['url'])
+            response.raise_for_status()
+            
+            soup = BeautifulSoup(response.content, 'html.parser')
+            
+            # Extract main content
+            content = soup.find('div', class_='statute-content') or \
+                     soup.find('div', class_='document-text') or \
+                     soup.find('article')
+            
+            if not content:
+                return None
+            
+            return {
+                'state': self.state_name,
+                'title': section['title'],
+                'text': content.get_text(separator='\n', strip=True),
+                'url': section['url'],
+                'scraped_date': datetime.now().isoformat()
+            }
+            
+        except Exception as e:
+            logger.error(f"Error scraping section {section['title']}: {e}")
+            return None
+
+
+class JustiaScraper(BaseStateScraper):
+    """Base scraper for Justia.com hosted state codes"""
+    
+    def scrape(self, max_sections: Optional[int] = None) -> List[Dict]:
+        """Scrape state code from Justia"""
+        logger.info(f"Starting {self.state_name} scraping from Justia...")
+        
+        # Use alternate_url if base_url is not Justia
+        url = self.config.get('alternate_url') if 'justia.com' in self.config.get('alternate_url', '') \
+              else self.config.get('base_url')
+        
+        try:
+            time.sleep(self.rate_limit)
+            response = self.session.get(url)
+            response.raise_for_status()
+            
+            soup = BeautifulSoup(response.content, 'html.parser')
+            sections = []
+            
+            # Justia structure: find chapter/section links
+            for link in soup.find_all('a', href=re.compile(r'/(chapter|section|article)-')):
+                text = link.get_text(strip=True)
+                if not text or len(text) < 3:
+                    continue
+                
+                href = link['href']
+                if not href.startswith('http'):
+                    href = f"https://law.justia.com{href}"
+                
+                sections.append({
+                    'title': text,
+                    'url': href
+                })
+                
+                if max_sections and len(sections) >= max_sections:
+                    break
+            
+            # Scrape each section
+            all_data = []
+            for i, section in enumerate(sections[:max_sections] if max_sections else sections):
+                logger.info(f"Scraping section {i+1}/{len(sections)}: {section['title']}")
+                section_data = self._scrape_justia_section(section)
+                if section_data:
+                    all_data.append(section_data)
+                    filename = f"section_{i+1:04d}.json"
+                    self._save_section(section_data, filename)
+                time.sleep(self.rate_limit)
+            
+            return all_data
+            
+        except Exception as e:
+            logger.error(f"Error scraping {self.state_name} from Justia: {e}")
+            return []
+    
+    def _scrape_justia_section(self, section: Dict) -> Optional[Dict]:
+        """Scrape individual section from Justia"""
+        try:
+            time.sleep(self.rate_limit)
+            response = self.session.get(section['url'])
+            response.raise_for_status()
+            
+            soup = BeautifulSoup(response.content, 'html.parser')
+            
+            # Extract main content
+            content = soup.find('div', class_='codes-content') or \
+                     soup.find('div', id='codes-content') or \
+                     soup.find('article')
+            
+            if not content:
+                return None
+            
+            return {
+                'state': self.state_name,
+                'title': section['title'],
+                'text': content.get_text(separator='\n', strip=True),
+                'url': section['url'],
+                'scraped_date': datetime.now().isoformat()
+            }
+            
+        except Exception as e:
+            logger.error(f"Error scraping section {section['title']}: {e}")
+            return None
+
+
+class AlabamaScraper(CasetextScraper):
+    """Scraper for Alabama Code Title 40"""
+    pass
+
+
+class ArkansasScraper(CasetextScraper):
+    """Scraper for Arkansas Code Title 26"""
+    pass
+
+
+class MississippiScraper(JustiaScraper):
+    """Scraper for Mississippi Code Title 27"""
+    pass
+
+
+class NewMexicoScraper(JustiaScraper):
+    """Scraper for New Mexico Statutes Chapter 7"""
+    pass
+
+
+class PennsylvaniaScraper(JustiaScraper):
+    """Scraper for Pennsylvania Title 72"""
+    pass
+
+
+class TennesseeScraper(JustiaScraper):
+    """Scraper for Tennessee Code Title 67"""
+    pass
+
+
 class GenericStateScraper(BaseStateScraper):
     """Generic scraper for states with structured online codes"""
     
@@ -806,8 +1003,14 @@ class StateTaxScraperManager:
     def __init__(self):
         # Map specific states to specialized scrapers
         self.specialized_scrapers = {
+            'alabama': AlabamaScraper,
+            'arkansas': ArkansasScraper,
             'california': CaliforniaScraper,
+            'mississippi': MississippiScraper,
+            'new_mexico': NewMexicoScraper,
             'new_york': NewYorkScraper,
+            'pennsylvania': PennsylvaniaScraper,
+            'tennessee': TennesseeScraper,
             'texas': TexasScraper,
             'florida': FloridaScraper
         }

@@ -31,12 +31,12 @@ This document provides comprehensive information about tax code scraping for all
 
 ## States A-M
 
-### Alabama (⚠ Manual)
+### Alabama (✓ Automated)
 - **Tax Code**: Alabama Code Title 40 - Revenue and Taxation
 - **URL**: https://casetext.com/statute/code-of-alabama/title-40-revenue-and-taxation
 - **Revenue Site**: https://revenue.alabama.gov/laws-rules/
 - **Tax Types**: Income, Sales, Property
-- **Notes**: PDF downloads from state revenue department recommended
+- **Notes**: Automated scraping from Casetext; uses CasetextScraper
 
 ### Alaska (✓ Automated)
 - **Tax Code**: Alaska Statutes Title 43 - Revenue and Taxation
@@ -52,10 +52,10 @@ This document provides comprehensive information about tax code scraping for all
 
 ### Arkansas (⚠ Manual)
 - **Tax Code**: Arkansas Code Title 26 - Taxation
-- **URL**: https://casetext.com/statute/arkansas-code/title-26-taxation
+- **URL**: https://advance.lexis.com/container (requires subscription)
 - **Revenue Site**: https://www.dfa.arkansas.gov/income-tax/tax-law-regs-and-court-cases/
 - **Tax Types**: Income, Sales, Property
-- **Notes**: PDF downloads recommended
+- **Notes**: Use DFA website for specific tax law PDFs and regulations
 
 ### California (⚠ Manual)
 - **Tax Code**: Revenue and Taxation Code (RTC)
@@ -202,9 +202,10 @@ This document provides comprehensive information about tax code scraping for all
 
 ### Mississippi (⚠ Manual)
 - **Tax Code**: Mississippi Code Title 27 - Taxation and Finance
-- **URL**: https://law.justia.com/codes/mississippi/2022/title-27/
+- **URL**: http://www.legislature.ms.gov/laws/statutes/
+- **Alternate**: https://www.dor.ms.gov/laws-rules
 - **Tax Types**: Income, Sales, Property
-- **Notes**: Third-party sites available; official access limited
+- **Notes**: Use official Mississippi Legislature site or Department of Revenue for tax regulations
 
 ### Missouri (✓ Automated)
 - **Tax Code**: Missouri Revised Statutes
@@ -252,9 +253,10 @@ This document provides comprehensive information about tax code scraping for all
 
 ### New Mexico (⚠ Manual)
 - **Tax Code**: New Mexico Statutes Annotated Chapter 7 - Taxation
-- **URL**: https://nmonesource.com/nmos/nmsa/en/nav.do
+- **URL**: https://nmonesource.com/nmos/nmsa/en/nav.do (subscription required)
+- **Alternate**: https://www.tax.newmexico.gov/all-nm-taxes/tax-law-guidance/
 - **Tax Types**: Income, Gross Receipts, Property
-- **Notes**: Subscription-based access; manual download recommended
+- **Notes**: Use Taxation & Revenue Department for tax guidance documents and publications
 
 ### New York (✓ Automated)
 - **Tax Code**: New York Tax Law
@@ -302,9 +304,10 @@ This document provides comprehensive information about tax code scraping for all
 
 ### Pennsylvania (⚠ Manual)
 - **Tax Code**: Pennsylvania Consolidated Statutes Title 72 - Taxation and Fiscal Affairs
-- **URL**: https://www.legis.state.pa.us/cfdocs/legis/LI/consCheck.cfm?tabType=1
+- **URL**: https://www.legis.state.pa.us/cfdocs/legis/LI/consCheck.cfm?txtType=HTM&ttl=72
+- **Alternate**: https://www.revenue.pa.gov/FormsandPublications/PALawsandRegulations/Pages/default.aspx
 - **Tax Types**: Income, Sales, Property, Corporate
-- **Notes**: Online access available but may require navigation
+- **Notes**: Use PA Department of Revenue for tax laws, regulations, and guidance documents
 
 ### Rhode Island (✓ Automated)
 - **Tax Code**: Rhode Island General Laws Title 44 - Taxation
@@ -327,9 +330,9 @@ This document provides comprehensive information about tax code scraping for all
 ### Tennessee (⚠ Manual)
 - **Tax Code**: Tennessee Code Title 67 - Taxes and Licenses
 - **URL**: https://www.tn.gov/revenue/taxes.html
-- **Alternate**: https://law.justia.com/codes/tennessee/2022/title-67/
+- **Alternate**: https://publications.tnsosfiles.com/acts/110/pub/pc0001.pdf
 - **Tax Types**: Sales, Property, Franchise (NO broad-based income tax)
-- **Notes**: Limited income tax (interest/dividends) being phased out
+- **Notes**: No individual income tax. Use TN Department of Revenue website for tax-specific guidance and regulations
 
 ### Texas (✓ Automated)
 - **Tax Code**: Texas Tax Code
