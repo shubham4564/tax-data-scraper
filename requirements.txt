@@ -1,0 +1,35 @@
+"""
+Requirements for Legal Tax IR Data Collection and Evaluation
+"""
+
+# Core dependencies
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+
+# Data processing
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.10.0
+
+# Web scraping and parsing
+selenium>=4.15.0  # For JavaScript-heavy sites
+pdfplumber>=0.10.0  # For PDF text extraction
+camelot-py>=0.11.0  # For PDF table extraction
+tabula-py>=2.8.0  # Alternative PDF table extraction
+
+# Annotation interface (optional)
+flask>=3.0.0  # For web-based annotation tool
+
+# Evaluation and metrics
+scikit-learn>=1.3.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Utilities
+python-dateutil>=2.8.0
+tqdm>=4.66.0  # Progress bars
+python-dotenv>=1.0.0  # Environment variables
+
+# Testing (optional)
+pytest>=7.4.0
