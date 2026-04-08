@@ -13,6 +13,10 @@ selenium>=4.15.0  # For JavaScript-heavy sites
 pdfplumber>=0.10.0  # For PDF text extraction
 camelot-py>=0.11.0  # For PDF table extraction
 tabula-py>=2.8.0  # Alternative PDF table extraction
+pypdf>=4.2.0  # Direct text extraction from digital PDFs
+pytesseract>=0.3.10  # OCR fallback for scanned PDFs
+Pillow>=10.3.0  # Image processing for OCR
+PyMuPDF>=1.24.0  # Render PDF pages for OCR
 
 # Annotation interface (optional)
 flask>=3.0.0  # For web-based annotation tool
@@ -26,6 +30,7 @@ seaborn>=0.12.0
 python-dateutil>=2.8.0
 tqdm>=4.66.0  # Progress bars
 python-dotenv>=1.0.0  # Environment variables
+networkx>=3.0  # Graph construction and community detection
 
 # Testing (optional)
 pytest>=7.4.0

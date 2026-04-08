@@ -248,7 +248,7 @@ STATE_CONFIGS = {
     'nevada': {
         'name': 'Nevada',
         'base_url': 'https://www.leg.state.nv.us/nrs/',
-        'chapters': ['363', '372', '374', '375'],  # Various business taxes, sales
+        'chapters': ['363A', '363B', '372', '374', '375'],  # Commerce tax, payroll tax, sales/use, excise
         'type': 'structured',
         'tax_types': ['sales', 'property', 'business'],  # No state income tax
         'notes': 'Nevada Revised Statutes. No state income tax.'
@@ -692,6 +692,89 @@ class FloridaScraper(BaseStateScraper):
             return None
 
 
+class NevadaScraper(BaseStateScraper):
+    """Scraper for Nevada Revised Statutes tax-focused chapters."""
+
+    def scrape(self, max_sections: Optional[int] = None) -> List[Dict]:
+        logger.info("Starting Nevada tax code scraping...")
+
+        chapters = self.config.get("chapters", ["363", "372", "374", "375"])
+        all_data: List[Dict] = []
+
+        for chapter in chapters:
+            chapter_url = f"{self.config['base_url']}NRS-{chapter}.html"
+            chapter_data = self._scrape_nv_chapter(chapter, chapter_url, max_sections=max_sections)
+            if chapter_data:
+                all_data.append(chapter_data)
+                self._save_section(chapter_data, f"chapter_{chapter}.json")
+
+        return all_data
+
+    def _scrape_nv_chapter(self, chapter: str, url: str, max_sections: Optional[int] = None) -> Optional[Dict]:
+        """Scrape Nevada chapter page and its section links."""
+        try:
+            time.sleep(self.rate_limit)
+            response = self.session.get(url)
+            response.raise_for_status()
+
+            soup = BeautifulSoup(response.content, "html.parser")
+            sections: List[Dict] = []
+
+            pattern = re.compile(rf"NRS-{chapter}\.\d+\.html")
+            for link in soup.find_all("a", href=pattern):
+                href = link.get("href", "")
+                if not href:
+                    continue
+
+                section_url = href if href.startswith("http") else f"{self.config['base_url']}{href.lstrip('/')}"
+                title = link.get_text(strip=True) or href
+                section_payload = self._scrape_nv_section(chapter, title, section_url)
+                if section_payload:
+                    sections.append(section_payload)
+
+                if max_sections and len(sections) >= max_sections:
+                    break
+
+            return {
+                "state": "Nevada",
+                "chapter": chapter,
+                "chapter_url": url,
+                "sections_found": len(sections),
+                "sections": sections,
+                "scraped_date": datetime.now().isoformat(),
+            }
+
+        except Exception as e:
+            logger.error(f"Error scraping Nevada chapter {chapter}: {e}")
+            return None
+
+    def _scrape_nv_section(self, chapter: str, title: str, url: str) -> Optional[Dict]:
+        """Scrape individual Nevada statute section content."""
+        try:
+            time.sleep(self.rate_limit)
+            response = self.session.get(url)
+            response.raise_for_status()
+
+            soup = BeautifulSoup(response.content, "html.parser")
+            content = soup.find("main") or soup.find("body")
+            text = content.get_text(separator="\n", strip=True) if content else ""
+
+            if not text:
+                return None
+
+            return {
+                "state": "Nevada",
+                "chapter": chapter,
+                "title": title,
+                "url": url,
+                "text": text,
+            }
+
+        except Exception as e:
+            logger.warning(f"Error scraping Nevada section {title}: {e}")
+            return None
+
+
 class CasetextScraper(BaseStateScraper):
     """Base scraper for Casetext.com hosted state codes"""
     
@@ -1007,6 +1090,7 @@ class StateTaxScraperManager:
             'arkansas': ArkansasScraper,
             'california': CaliforniaScraper,
             'mississippi': MississippiScraper,
+            'nevada': NevadaScraper,
             'new_mexico': NewMexicoScraper,
             'new_york': NewYorkScraper,
             'pennsylvania': PennsylvaniaScraper,
