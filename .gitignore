@@ -23,14 +23,10 @@ wheels/
 .installed.cfg
 *.egg
 
-# Data files (don't commit scraped data or annotations)
-data/raw/**
-data/processed/**
-data/annotations/**
+# Data files (never commit datasets/artifacts)
+data/**
 !data/.gitkeep
-!data/raw/.gitkeep
-!data/processed/.gitkeep
-!data/annotations/.gitkeep
+!data/**/.gitkeep
 
 # Logs
 *.log
